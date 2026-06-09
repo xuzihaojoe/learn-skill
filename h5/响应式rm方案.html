@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=10.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .main {
+            width: 2rem;
+            height: 2rem;
+            background: #00cc99;
+        }
+    </style>
+</head>
+<body>
+    <div class="main"></div>
+    <script>
+        /**
+         * 方案一：看起来简单实际有缺陷
+         */
+        // 设计图是375的方案
+        // 不能用这个因为包括了滚动条的宽度
+        // const ScreenWidth = window.innerWidth
+        const ScreenWidth = document.documentElement.clientWidth
+        const UiWidth = 375
+        const SingleRemWidthUiSize = ScreenWidth / UiWidth
+        document.documentElement.style.fontSize = `${SingleRemWidthUiSize}PX`
+        // 这个方案有问题，是因为这样如果真的是375的真实尺寸，那么计算出来1rem是1px，但是字体最小设置12px
+
+
+        /**
+         * 方案二：这样可以，但是使用的时候还是需要你计算一下
+         */
+        // 所以一般如下用3.75，这样算出来的就是一个1rem就是100px
+        // 设计师的稿件是 20px，那么就是0.2rem 相对简单
+
+
+        /**
+         * 方案三：用目标尺寸除以10，然后写px的时候直接按照ui设计的写，会通过postcss-pxtorem计算出精准的rem
+         * 举例子，屏幕尺寸：1875px，rem比例：10屏幕就是10rem，设计稿：375的
+         *        1rem = 1875 / 10 = 187.5px   1rem = 375 / 10 = 37.5
+         * 我们画一个div在375设计稿量出来是10，所以为我们开发的时候就写了10px
+         * 通过postcss-pxtorem，运行会计算 占的rem是： 10 / 37.5(1rem) = 0.26rem， 根据rem算真是尺寸： 185.5 * 0.26rem = 48.1px 结果就渲染48.1px
+         * 此时电脑屏幕尺寸发生变化：变成了：750px 计算1rem的实际尺寸： 750 / 10 = 75，1rem就是75px，此时rem又会重新计算 0.26rem * 75= 19.5px
+         * 这个是rem的本质，设计稿的尺寸也是很重要的，比如和系统设置的算法一样，然后就是动态计算rem：1rem是多少设计稿，1rem又是多少真是屏幕的px
+         */
+
+
+
+
+
+    </script>
+</body>
+</html>
