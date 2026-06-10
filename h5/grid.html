@@ -6,6 +6,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script>
+        /**
+         * 几个概念：
+         * 容器里面有：
+         * 1. 行row，列column
+         * 2. 行和列交叉的区域就是单元格cell，n行就有n+1条水平网格线，m列就有m+1条垂直网格线
+         * 3. 有两种属性：一种是容器属性（container），另一种是项目属性（cell）
+         *
+         */
+    </script>
     <style>
         /**
            * 让我们来学习一下grid，最强大css布局功能
@@ -24,9 +34,9 @@
         }
         .five-inner {
             background-color: gray;
-        }K
+        }
         .six-inner {
-            background-color: black;K
+            background-color: palegreen;
         }
         .seven-inner {
             background-color: navajowhite;
@@ -37,13 +47,274 @@
         .nine-inner {
             background-color: yellow;
         }
-        .one, .two, .three, .four, .five, .six, .seven, .nine, .ten, .zero {
-            margin-bottom: 80px;
+        .one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten, .zero {
+            margin-bottom: 300px;
         }
+
+        .one {
+            display: grid;
+            /**
+                设置三列和每一列的列宽，设置三行和每一行的行高
+                现在就是9个元素，如果有多出来的，会按照内容的宽高
+                如果设置了自己的宽高，就按照自己，没有设置到宽高，也没有被命中的，最高的宽度，比如在这个例子中：【dddd】元素的高度是70px，那么【9】这个元素的高度没有命中，就按照【dddd】的70px
+                所以尽量设置正确的行列不要记住那么多奇怪的规则
+             */
+            grid-template-columns: 200px 400px 200px;
+            grid-template-rows: 400px 800px 400px;
+        }
+        .two {
+            height: 700px;
+            width: 700px;
+            display: grid;
+            border: 1px solid pink;
+            /**
+            可以设置百分比
+             */
+            /*grid-template-rows: 20% 20% 20%;*/
+            /*grid-template-columns: 30% 30% 30%;*/
+
+            /**
+            可以设置重复
+            2个参数，第一个是重复的次数，第二个就是所占的像素，可以是px，可以是百分比
+             */
+            /*grid-template-columns: repeat(2, 10% 20% 20%);*/
+            /*grid-template-rows: repeat(3, 33.3%);*/
+
+
+            /**
+             auto-fill关键字，就是repeat的时候，其实cell的大小是固定了，但是容器的大小不固定，我们希望尽可能多的容纳更多的cell
+             */
+            grid-template-rows: repeat(auto-fill, 10%);
+            grid-template-columns: repeat(auto-fill, 25%);
+        }
+        .three {
+            display: grid;
+            width: 800px;
+            /**
+            fr 关键字
+            就是按照容器剩下的比例分配：也就是去掉400px，剩下的1fr 2fr 就是 1:2这样
+             */
+            /*grid-template-columns: 400px 1fr 2fr;*/
+            /*grid-template-rows: repeat(3, 300px);*/
+
+            /**
+            minmax: 接受两个长度minmax（100px ，1fr）
+                只要剩余的空间足够就会往的数字靠拢，
+                但是注意，如果剩余的空间不够min的话，会强行超出容器，或者你的min可以用auto
+             */
+            /**
+            auto关键字就是让浏览器自己决定长度
+             */
+            grid-template-columns: 300px 400px minmax(200px, 2fr);
+            grid-template-rows: repeat(3, 300px);
+        }
+        .four {
+            display: grid;
+            /**
+            网格线名称：定义网格线名称， 网格线允许设置多个名字
+             */
+            grid-template-columns: [c1] 200px [c2] 200px [c3] 200px [c4];
+            grid-template-rows: [r1 row-one] 300px [r2] 300px [r3] 300px [r4];
+            /**
+            grid-row-grap，grid-column-grap，grid-gap：row就是行间隔，colunm就是列间隔，grap就是两个都写上，合成属性
+             */
+            /*grid-row-gap:20px;*/
+            /*grid-column-gap: 20px;*/
+            grid-gap: 20px 10px;
+        }
+        .five {
+          display: grid;
+            width: 300px;
+            grid-gap: 20px;
+          grid-template-rows: 200px 200px 100px;
+          grid-template-columns: repeat(3, 200px);
+            /**
+                区域命名，区域命名也会影响终止线的命名：起始的就是 [区域名]-start（a-start），终止线是 [区域名]-end（a-end） 垂直和水平都是
+             */
+            grid-template-areas: 'a a a'
+                                 'd e f'
+                                 'g h i';
+            /**
+                grid-auto-flow: 也就是排列方式，默认是row从左到右，可以改成column 从上到下
+             */
+            grid-auto-flow: column;
+            /**
+                grid-auto-flow还有两个值，是 row dense, column dense，这种是用某些特定的cell占了空间，让一些多余的空间自动排列，不然的话，比如一行是300，前面两个是200的cell，后面是100的cell
+                第一行的最后一个位置的cell即使可以让第三个排列，也不会自动移动上来，所以这时候就是 row dense/ column dense
+             */
+
+        }
+        /**
+                grid-auto-flow还有两个值，是 row dense, column dense，这种是用某些特定的cell占了空间，让一些多余的空间自动排列，不然的话，比如一行是300，前面两个是200的cell，后面是100的cell
+                第一行的最后一个位置的cell即使可以让第三个排列，也不会自动移动上来，所以这时候就是 row dense/ column dense
+                就是有项目合并其他项目把东西挤下去：grid-column: span 2
+             */
+        .demo-no-dense, .demo-dense {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+        }
+        .demo-dense {
+            grid-auto-flow: row dense;
+        }
+        .demo-item {
+            background: skyblue;
+            height: 60px;
+        }
+
+        .six {
+            /**
+               justify-items: start end centerr stretch
+               align-items: start end centerr stretch
+               place-items: 上面两个的合并属性 第一个是justify align
+               默认cell就是设置的列和行的宽高也就是200 200，但是如果你设置了cell里面内容的的宽高，
+               他就会在列和行的宽高里面进行start、end这些，也就是80*80会在200*200里面位移
+             */
+
+            /**
+            justify-content: start end center stretch space-around space-between space-evenly()，
+            align-content 同上
+            place-content 同上
+             */
+            display: grid;
+            width: 800px;
+            height: 1000px;
+            border: 1px solid purple;
+            grid-template-columns: repeat(3, 200px);
+            grid-template-rows: repeat(3, 200px);
+            grid-gap: 10px;
+            place-items: center center;
+            place-content: center center;
+        }
+        .six > div {
+            width: 80px;
+            height: 80px;
+        }
+
+        .seven {
+            /**
+            grid-auto-rows:
+            grid-auto-column:
+            这个要配合项目属性说的，项目可能设置到3*3的范围之内，然后可以通过那两个属性设置那些在范围之外的宽高，
+            用法和grid-template-rows和grid-template-columns一样，若不指定，就根据单元格自动设置大小
+             */
+            /**
+               可以指定任意项目的位置
+                grid-column-start属性：左边框所在的垂直网格线
+                grid-column-end属性：右边框所在的垂直网格线
+                grid-row-start属性：上边框所在的水平网格线
+                grid-row-end属性：下边框所在的水平网格线
+             */
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            grid-template-rows: repeat(3, 200px);
+            grid-gap: 5px;
+            grid-auto-columns: 200px;
+            grid-auto-rows: 200px;
+            /**
+            grid-template-areas 要使用要先定义好
+             */
+            grid-template-areas: 'a a a'
+                                 'd e f'
+                                 'g h i';
+
+        }
+
+        .seven .one-inner   { grid-area: a; }
+        .seven .two-inner   { grid-area: d; }
+        .seven .three-inner { grid-area: e; }
+        .seven .four-inner  { grid-area: f; }
+        .seven .five-inner  { grid-area: g; }
+        .seven .six-inner   { grid-area: h; }
+        .seven .seven-inner { grid-area: i; }
+        .seven .eight-inner {
+        /**
+        这个不一定要些数字，写命名也是可以的,还有复合写法
+            grid-column: 4/5
+            grid-row: 4/5
+            grid-column: span 2
+            grid-row: span 2
+            grid-column: 1 / span 2 从哪个线开始占多少
+            grid-row: 3 / span 2
+         */
+            grid-column-start: 4;
+            grid-column-end: 5;
+
+        }
+        .seven .nine-inner {
+            grid-row-start: 4;
+            grid-rown-end: 5;
+        }
+
+
+        .eight {
+            display: grid;
+            grid-template-columns: 200px 200px 200px;
+            grid-template-rows: 200px 200px 200px;
+            grid-gap: 10px;
+            grid-auto-rows: 200px;
+        }
+        .eight .one-inner {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+
+        .nine {
+            display: grid;
+            grid-template-columns: 200px 200px 200px;
+            grid-template-rows: 200px 200px 200px;
+            grid-template-areas: 'a b c'
+                                 'd e f'
+                                 'g h i';
+        }
+        /**
+            grid-area还可以用来写定位的位置
+            row-start/column-start/row-end/column-end
+            可以设定位置
+        */
+        .nine .one-inner {
+            grid-area: 2/2/4/4 ;
+        }
+
+
+        .ten {
+            /**
+            justify-self
+            align-self
+            place-self
+            这样是作用单个cell
+             */
+
+            display: grid;
+            grid-template-columns: 200px 200px 200px;
+            grid-template-rows: 200px 200px 200px;
+            justify-items: end;
+            align-items: end;
+
+
+        }
+        .ten > div {
+            width: 80px;
+            height: 80px;
+        }
+        .ten .eight-inner {
+            justify-self: start;
+        }
+        .ten .seven-inner {
+            align-self: start;
+        }
+        .ten .six-inner {
+            place-self: center center;
+        }
+
+
     </style>
 </head>
 <body>
+    <h1>one</h1>
     <div class="one">
+        22
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
         <div class="three-inner">3</div>
@@ -53,7 +324,10 @@
         <div class="seven-inner">7</div>
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
+        <div style="width: 40px;height: 40px;background: lime">cccc</div>
+        <div style="width: 40px;height: 70px;background: lime">dddd</div>
     </div>
+    <h1>two</h1>
     <div class="two">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -65,6 +339,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>three</h1>
     <div class="three">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -76,6 +351,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>four</h1>
     <div class="four">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -87,6 +363,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>five</h1>
     <div class="five">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -98,6 +375,27 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <!-- dense 对比 demo -->
+    <h1>不加 dense（有空隙）</h1>
+    <div class="demo-no-dense">
+        <div class="demo-item" style="grid-column: span 2">1</div>
+        <div class="demo-item" style="grid-column: span 2;">2(占2列)</div>
+        <div class="demo-item">3</div>
+        <div class="demo-item">4</div>
+        <div class="demo-item">5</div>
+        <div class="demo-item" style="grid-column: span 2;">6(占2列)</div>
+    </div>
+
+    <h1>加了 dense（自动填空）</h1>
+    <div class="demo-dense">
+        <div class="demo-item" style="grid-column: span 2">1</div>
+        <div class="demo-item" style="grid-column: span 2;">2(占2列)</div>
+        <div class="demo-item">3</div>
+        <div class="demo-item">4</div>
+        <div class="demo-item">5</div>
+        <div class="demo-item" style="grid-column: span 2;">6(占2列)</div>
+    </div>
+    <h1>six</h1>
     <div class="six">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -109,6 +407,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>seven</h1>
     <div class="seven">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -120,6 +419,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>eight</h1>
     <div class="eight">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -131,6 +431,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>nine</h1>
     <div class="nine">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -142,6 +443,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>ten</h1>
     <div class="ten">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -153,6 +455,7 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+    <h1>zero</h1>
     <div class="zero">
         <div class="one-inner">1</div>
         <div class="two-inner">2</div>
@@ -164,6 +467,8 @@
         <div class="eight-inner">8</div>
         <div class="nine-inner">9</div>
     </div>
+
+
 </body>
 <script>
 </script>
