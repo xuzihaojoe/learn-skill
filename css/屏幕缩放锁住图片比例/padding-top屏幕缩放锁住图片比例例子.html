@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>古老方法：Padding Hack 保持 16:9</title>
+  <style>
+    /* 1. 外层卡片盒子，宽度随屏幕缩放 */
+    .card {
+      width: 80%;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+    }
+
+    /* 2. 核心黑魔法：图片的外层口袋 */
+    .image-container {
+      position: relative;     /* 为里面的图片绝对定位做准备 */
+      width: 100%;            /* 宽度撑满卡片 */
+      height: 0;              /* ❌ 把高度设为 0！ */
+
+      /* 💡 核心原理：CSS 中 padding-top 如果写百分比，是相对于“父元素宽度”计算的。
+         9 ÷ 16 = 0.5625，也就是 56.25%。
+         这样哪怕高度是 0，这个 padding 也会死死撑出一个 16:9 的空白格子！ */
+      padding-top: 56.25%;
+      background: #eee;       /* 图片没加载出来时的占位灰色背景 */
+    }
+
+    /* 3. 真正放图片的地方 */
+    .image-container img {
+      position: absolute;     /* 脱离文档流，塞进上面那个 padding 撑出来的空壳里 */
+      top: 0;
+      left: 0;
+      width: 100%;            /* 宽高死死填满口袋 */
+      height: 100%;
+
+      /* 保证图片等比裁剪，不被压扁 */
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body style="background: #f0f0f0;">
+
+  <div class="card">
+    <div class="image-container">
+      <img src="../word_pg.png" alt="测试图片">
+    </div>
+
+    <h3>👴 古老的 Padding Hack 示范</h3>
+    <p>拉伸窗口看看！图片依然完美保持 16:9 且不走样。</p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /**
+            介绍一下clamp是什么个用法
+            响应式布局最喜欢这么用了，看一下用法
+            中间这个值一般都是设置动态，因为如果不是动态没什么什么意义了，比如
+            现在2vw在屏幕宽度为1000px得时候就是20px，那么现在就是20px
+            但是屏幕尺寸变化变成100px得时候2vw就是2px，这时候最小值16px就会生效，设置成16px，就不会让px变得过于小
+            当尺寸变成10000px得时候2vw就是200px，这时候最大值就会生效，设置成30px，就不会让px变得过于大
+         */
+        .fontSize {
+            clamp(16px px, 1 vw, 30 px)
+         }
+    </style>
+</head>
+<body>
+    <div></div>
+</body>
+</html>

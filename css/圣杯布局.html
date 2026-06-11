@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        /**
+        flex写法
+         */
+        /*.box {*/
+        /*    height: 100vh;*/
+        /*    display: flex;*/
+        /*    flex-direction: column;*/
+        /*}*/
+        /*header {*/
+        /*    height: 100px;*/
+        /*    width: 100%;*/
+        /*    background-color: skyblue;*/
+        /*}*/
+        /*footer {*/
+        /*    height: 100px;*/
+        /*    width: 100%;*/
+        /*    background-color: skyblue;*/
+        /*}*/
+        /*main {*/
+        /*    flex-grow: 1;*/
+        /*    display: flex;*/
+        /*    align-items: stretch;*/
+        /*    width: 100%;*/
+        /*}*/
+        /*main aside {*/
+        /*    background-color: deepskyblue;*/
+        /*    width: 200px;*/
+        /*}*/
+        /*main .content {*/
+        /*    background-color: lightgrey;*/
+        /*    flex-grow: 1;*/
+        /*}*/
+
+
+        /**
+        grid写法
+         */
+        .box {
+            display: grid;
+            height: 100vh;
+            width: 100%;
+            grid-template-columns: 100px auto 100px;
+            grid-template-rows: 100px auto 100px;
+        }
+        header, footer {
+            background-color: skyblue;
+        }
+        aside {
+            background-color: deepskyblue;
+        }
+        main {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <header></header>
+        <aside></aside>
+        <main></main>
+        <aside></aside>
+        <footer></footer>
+    </div>
+</body>
+</html>

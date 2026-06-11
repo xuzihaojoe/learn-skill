@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100%;
+        }
+        .box > div {
+            width: 100%;
+            height: 200px;
+        }
+
+        /**
+        列出来所有媒体查询的方式
+         */
+
+        /**
+        800px以下的的
+         */
+        @media (max-width: 800px) {
+            .box .one {
+                background-color: red;
+            }
+        }
+        /**
+        1400px以上的
+         */
+        @media (min-width: 1400px) {
+            .box .one {
+                background-color: blue;
+            }
+        }
+        /**
+        800px-1400px的
+         */
+        @media (min-width: 800px) and (max-width: 1400px) {
+            .box .one {
+                background-color: orange;
+            }
+        }
+        /**
+        800px以下的 不要
+         */
+        @media not (max-width: 800px) {
+            .box .two {
+                background-color: skyblue;
+            }
+        }
+        /**
+        横屏的
+         */
+        @media (orientation: landscape) {
+            .box .three {
+                background-color: gray;
+            }
+        }
+        /**
+        竖屏的
+         */
+        @media (orientation: portrait) {
+            .box .three {
+                background-color: black;
+            }
+        }
+        /**
+            min-height,max-height
+         */
+        @media (max-height: 600px) {
+            .box .four {
+                background-color: yellow;
+            }
+        }
+        @media (min-height: 600px) {
+            .box .four {
+                background-color: greenyellow;
+            }
+        }
+        /**
+            宽高比, 这个用得很少，大概就这样，不研究了
+         */
+        @media (aspect-ratio: 16/9) {
+
+        }
+        /**
+            分辨率
+         */
+        @media (min-resolution: 300dpi) {
+
+        }
+        /**
+            暗黑模式/亮色模式
+         */
+        @media (prefers-color-scheme: dark) {}
+        @media (prefers-color-scheme: light) {}
+
+        /**
+        打印模式
+         */
+        @media print {
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+        <div class="four"></div>
+        <div class="five"></div>
+        <div class="six"></div>
+        <div class="seven"></div>
+        <div class="eigth"></div>
+        <div class="nine"></div>
+    </div>
+</body>
+</html>
