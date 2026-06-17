@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="box">
+        这是文字这是文字
+    </div>
+    <button onclick="copyText()">复制</button>
+
+    <script>
+        function copyText() {
+            const text = document.querySelector('.box').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('复制成功');
+            });
+        }
+        // 黏贴
+        navigator.clipboard.readText().then(text => {
+            console.log(text);
+        });
+        /**
+         * 安全限制：该 API 必须在 HTTPS 环境（或 localhost）下才能工作。/
+         * 用户交互：必须由用户主动触发的行为（如点击事件 click）内部调用，不能用脚本无缘无故在后台偷偷读取或写入。
+         *
+         * 如果想做复杂功能或版权追加，可以去拦截 copy 事件并通过 event.clipboardData 进行操作。”
+         */
+    </script>
+</body>
+</html>

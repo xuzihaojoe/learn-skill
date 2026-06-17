@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    /**
+     * 跨域：同源策略：协议相同，域名相同，端口号相同
+     * 是为了保护安全，禁止网站请求跨站请求，
+     * 如何解决：
+     * 1. 后端配置跨域通过几个字段：
+     *   ○ Access-Control-Allow-0rigin: 域名
+     *   ○ Access-Control-Allow-Methods：post
+     *   ○ Access-Control-Allow-Headers：a b c什么header
+     *   ○ Access-Control-Max-Age：不用再次预检的时间（可以不设置，缓存时间）
+     *  非简单请求会有预检查，简单请求不会，两个的区别在于：
+     *  非简单请求会先发送预检查，这时候后端就进行检查是否跨域，如果跨域就返回cros
+     *  但是如果简单请求，他就会先执行，然后再返回，但是浏览器有cros机制，拦截不让响应，但是请求服务器已经执行了
+     */
+
+    /**
+     * cookie问题
+     * 几个配置：
+     * httponly：js是否可以操作渐变
+     * secure：是否只允许https请求
+     * max-age：缓存时间
+     * path：cookie的路径，不同的记录的路径的cookie是不可以共享的；了两种路径：后端的api路径，前端的路由都要匹配，对应的端才能用到cookie
+     * 比如设置的path是/api/go 那么发送这个请求要匹配上， 只要命中就行 /api/go 即使是 /api/go/then 这样也是可以命中的
+     * samesite: strict, lax
+     */
+
+    /**o
+     * csrf跨站请求伪造
+     * 就是伪造请求，比如我们做了一个伪造的b网站，我们放了一张a网站的图片，然后隐藏a网站图片点击的时候就会发送自动带上他的cookie这个就可能造出意外的请求
+     * 还有伪造表单，隐藏让用户点击的表达然后给a网站发请求，而且带上了cookie
+     * 怎么防御：
+     * 1. 添加csrf token，就是利用了无法访问非同源网站的内容，所以其实就把cookie的token放一个再请求头，那么你黑客发送的就没有那个请求头（httponly 一定要设置哟）
+     * 2. 设置cookie的samesite为strict，这样在别的网站发送就带不上cookie；
+     * 但是一般不这么做，如果真的设置成了strict，所以点击链接的跳转，【浏览器拒绝在任何跨站的链接跳转中携带 Cookie】，然后你明明登录a网站，在b网站链接跳转过去就不行了，还有单点登录也不行
+     * 所以一般都是设置lax：
+     *  通过点击 <a> 标签超链接、或者通过修改 window.location.href 这种安全的导航跳转，浏览器允许携带 Cookie
+     *  ajax，fetch，表单请求post这种就会严禁携带跨站cookie
+     *
+     *  一般都是12方案搭配使用
+     */
+
+    /**
+     * xss跨站脚本攻击
+     * 想方设法再网站执行恶意的js代码：
+     * 1. 存储型：把恶意代码保存在数据库中，然后通过页面加载的时候执行
+     * 2. 反射性：通过url把恶意代码带到服务器
+     * 几种方法解决：
+     * 1. cookie设置httponly，这样防止恶意代码盗取cookie
+     * 2. 对于富文本的特殊输入，需要过滤危险标签和属性；尽量不要用执行js的标签的，v-html，eval，script，dangerouslySetInnerHTML
+     *      （1）如果非要用不可使用：DOMPurify 过滤，可以封装成全局指令 v-safe-html
+     *      （2） 业务需要保留特定标签/样式怎么办？使用DOMPurify的白名单功能
+     * 3. 配置csp：配置安全策略，限制执行js的标签，比如：default-src 'self'，明确告诉浏览器，只允许执行来自当前域名（'self'）以及受信任域名的脚本，这个方案不是很懂，需要前后端配合
+     *配置： Content-Security-Policy: default-src 'self'; script-src 'self' https://trustedscripts.com;
+     * 4. 写一个非破坏性的过滤函数，对于危险的标签转换成普通字符串（html实体编码也是一个重要的知识，就是的<>改成&lt &rt）
+     */
+    function sanitizeAndPreserveDangerousTags(rawHtml) {
+        // 1. 创建一个离线的沙箱容器
+        const container = document.createElement('div');
+        container.innerHTML = rawHtml;
+
+        // 2. 定义绝对危险、必须变成纯文本的标签黑名单
+        const dangerousTags = ['script', 'iframe', 'frame', 'object', 'embed'];
+
+        // 3. 递归遍历沙箱里的所有元素
+        const elements = container.querySelectorAll('*');
+        elements.forEach(el => {
+            const tagName = el.tagName.toLowerCase();
+
+            // 核心逻辑 A：如果命中了危险标签，将其转为实体编码文本
+            if (dangerousTags.includes(tagName)) {
+                // 将整个标签代码（如 <script>xxx/script>）转义成安全文本
+                const escapedText = el.outerHTML
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+
+                // 用转义后的纯文本替换掉原来的危险 DOM 节点
+                const textNode = document.createTextNode(escapedText);
+                el.parentNode.replaceChild(textNode, el);
+                return; // 该节点已销毁，跳出当前循环
+            }
+
+            // 核心逻辑 B：如果是普通标签，但身上带了高危的“行内异步事件”（如 onerror, onclick）
+            const attrs = el.attributes;
+            if (attrs) {
+                // 倒序遍历属性（防止边删边遍历导致索引错位）
+                for (let i = attrs.length - 1; i >= 0; i--) {
+                    const attrName = attrs[i].name.toLowerCase();
+
+                    // 只要属性是以 'on' 开头（事件监听），或者属性里包含 eval 关键字
+                    if (attrName.startsWith('on') || attrs[i].value.includes('eval(')) {
+                        // 安全起见，直接把这个危险属性拔掉
+                        el.removeAttribute(attrs[i].name);
+                    }
+
+                    // 检查 a 标签的 href 伪协议拦截
+                    if (attrName === 'href' && attrs[i].value.toLowerCase().startsWith('javascript:')) {
+                        // 把超链接恶意脚本变成普通文本死链
+                        el.setAttribute('href', '#');
+                    }
+                }
+            }
+        });
+
+        // 4. 返回洗过、且把危险标签降级成文本后的 HTML 字符串
+        return container.innerHTML;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width initial-scale=1.0 user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box div{
+            display: inline-block;
+            height: 300px;
+            width: 300px;
+            background-color: #cccccc;
+            margin: 20px;
+        }
+        .box2 {
+            height: 20px;
+            width: 1px;
+            background: black;
+        }
+        .box3 {
+            position: relative;
+        }
+        .box3::after {
+            content: "";
+            /**
+             * 创建一个伪元素，将伪元素设置为绝对定位，然后设置伪元素的宽高为200%，然后设置伪元素的边框，然后设置伪元素的缩放比例，然后设置伪元素的缩放原点为左上角，这样就可以让
+             原本写的1px的但是变粗的宽度真的变成1px，通过一个缩放，然后变小然后解决宽度变粗的问题
+             核心在于，你放大了，然后写了一个固定的尺寸1px solid black;，此时 缩小，这个尺寸就是原本的几分之几了，这样就解决宽度变粗的问题
+             */
+            position: absolute;
+            top: 0; left: 0; width: 200%; height: 200%;
+            border: 1px solid black;
+            transform: scale(0.5);
+            transform-origin: left top;
+        }
+
+
+    </style>
+</head>
+<body>
+<!--    <div class="box">-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--        <div></div>-->
+<!--    </div>-->
+<div class="box2">
+</div>
+<div class="box3"></div>
+<script>
+    /**
+     * 布局视口和视觉视口
+     * 1. 当你把整个meta去掉了，浏览器会认为这是最古老的为电脑设计的网站，就会把布局视口设置为960px，视觉视口也设置为：960px，也就是默认的你的宽度就变成了960px（但是不一定，具体的数值看浏览器）
+     * 2. 如果你只是把mate里面的width=device-width和initial-scale=1.0都去掉了，这个时候浏览器的还是会设置视觉视口为屏幕宽度，因为你设置了meta viewport；但是布局视口会被设置960px，所以就会滚动
+     * 3. 如果只去掉initial-scale=1.0或者width=device-width，那么布局视口还是手机宽度，视觉视口也是手机宽度，所以就是按照手机的布局
+     */
+    /**
+     * viewport 控制浏览器视口的宽度和缩放比例
+     * width=device-width 和设备宽度一致, 如果不用这个属性，那么浏览器会默认给一个虚拟宽度，是960左右，然后就会出现滚动条
+     * initial-scale=1.0 缩放比例，如果去掉了【width=device-width】，留有这个初始属性1.0，那也是有一样的效果的
+     * user-scalable=no 禁止用户缩放
+     * maximum-scale=1.0, minimum-scale=1.0 为了苹果浏览器的兼容，苹果浏览器会忽略缩放，所以需要这个兼容
+     */
+
+    /**
+     * viewport-fit=cover 可以适配iphone的刘海屏
+     */
+
+    /**
+     * 刘海屏与底部黑条适配（安全区域）
+     * 全面屏（如 iPhone 14/15 等）顶部有刘海，底部有操作条。如果不做处理，固定的定位元素会被遮挡。
+     * body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        }
+     */
+
+    /**
+     * 滚动穿透额问题
+     * 当页面弹出一个蒙层（Modal 弹窗）时，用户在弹窗上滑动，底部的背景页面居然也在跟着滚动。这是纯 H5 最经典的 bug 之一。
+     * 解决方案：
+     * 弹窗出现时，给 body 加上 position: fixed; top: -当前滚动高度; width: 100%;。
+     * 弹窗消失时，移除该样式，并通过 JS 恢复之前的滚动高度 window.scrollTo()。
+     */
+
+    /**
+     * iOS 滚动不流畅 / 橡皮筋回弹：
+     * 在 iOS 的 Safari 或 WebView 中，局部元素滚动（如 overflow-y: scroll）可能会出现卡顿、没有惯性滑动的现象。
+     * 解决方案： 加上 iOS 特有的私有属性：
+     * .scroll-container {
+     *   overflow-y: scroll;
+     *   -webkit-overflow-scrolling: touch;  启用弹性滚动 }
+    **/
+
+    /**
+     * IOS 键盘弹起，底部留白 / 页面不回弹
+     * 在 iOS 上，输入框（input/textarea）聚焦后键盘弹起，会将整个页面顶上去。但当输入框失焦、键盘收起时，页面经常掉不下来，导致底部留下一片空白，点击事件错位。
+     * 解决方案： 监听输入框的 blur 事件，手动让页面滚动一下以刷新视图。
+     *
+     * document.body.addEventListener('focusout', () => {
+     *   window.scrollTo(0, Math.max(document.body.clientHeight, document.documentElement.clientHeight));
+     * });
+     */
+
+    /**
+     * 键盘遮挡输入框
+     * 有时输入框在页面偏下方，键盘弹起后直接把输入框遮住了，用户看不见自己输了什么。
+     * 解决方案： 监听输入框的 focus 事件，延迟 300ms 执行 element.scrollIntoView(true)（或 scrollIntoViewIfNeeded()），将输入框滚动到可视区域内。
+     */
+
+    /**
+     * 搜索键盘的“搜索”按钮
+     * 如果想让手机键盘右下角的“换行/Enter”变成“搜索”或“前往”：
+     * 解决方案： 必须使用 <form> 包裹住 <input type="search">，并且监听 form 的 submit 事件。
+     */
+
+</script>
+</body>
+</html>

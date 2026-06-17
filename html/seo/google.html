@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * google的搜索引擎优化工具
+         * 很重要的一个工具，search console：https://search.google.com/search-console/welcome
+         * 这里可以输入你的域名，然后会在对应的云服务器厂商添加google提供的记录，记录类型填@，然后就可以验证了，验证完成就可以
+         * 这个验证的过程就是搜索引擎站长验证码：DNS TXT 记录（也就是你之前在第一步看到的方式 🌟最推荐）
+         * 访问 search console，这是一个google 的网站，可以查看你的网站在google的收录情况，以及如何优化
+         */
+
+        /**
+         * sitemap.xml
+         * 这个工具很重要，就是整个网站地图，告诉google你的网站有哪些页面，以及这些页面的更新时间，以及这些页面的权重
+         * 确保浏览器访问https://域名/sitemap.xml 可以访问到就行了
+         */
+
+        /**
+         * 搜索引擎优化工具：
+         * 网址检查（URL Inspection）怎么强行插队？（适用于新网站）
+         * 当你刚写完一个核心页面（比如首页或一篇新博客），不想等 Google 爬虫慢吞吞地来找你，你可以使用后台的“网址检查”功能。
+         *
+         * 具体操作步骤：
+         * 1. 输入网址：
+         * 在 Search Console 网页的最上方，有一个巨大的搜索框，写着 “Inspect any URL in "buhuidadaima.com"”。把你要加急的完整网址粘贴进去（例如：https://buhuidadaima.com/），然后敲回车。
+         *
+         * 2. 查看当前状态：
+         * 因为是新网站，Google 会弹出一个检测结果，大概率会显示：“URL is not on Google”（网址不在 Google 上）。这代表目前搜索结果里确实没有它。
+         *
+         * 3. 测试实时版本（开发者必备验证）：
+         * 在右上角点击 TEST LIVE URL（测试实时网址）。
+         * 为什么要做这一步？ 这一步是让 Googlebot 现场给你的网页“截个图”并运行一遍 JS。
+         * 看什么？ 测试完成后，点击“查看测试的网页”，检查 Screenshot（截图） 里的画面是不是正常的，以及 HTML 代码里有没有把你的核心内容渲染出来。
+         * 如果截图是一片空白，说明你的 CSR（客户端渲染）架构把爬虫挡住了，需要回去调前端代码（做 SSR 或预渲染）。
+         *
+         * 4. 点击加急按钮：
+         * 如果 live test 看起来一切正常，回到刚才的页面，点击 REQUEST INDEXING（请求编入索引）。
+         *
+         * 点击之后，你就成功进入了 Googlebot 的优先抓取队列。对于新站来说，用这种方式通常能在几小时到一天内让首页出现在 Google 的搜索结果中。
+         */
+
+        /**
+         * <link rel="canonical" href="https://www.buhuidadaima.com/" />
+         *  canonical：href 内部的网址，强烈建议使用绝对路径（包含 https:// 和完整域名），千万不要写 / 或 ./index.html 这样的相对路径。
+         *  写了这个访问每个页面的时候权重都会汇集到你这个网站
+         */
+
+
+        /**
+         * 暂时就这些吧，很复杂seo优化需要很多知识
+         */
+
+    </script>
+</body>
+</html>

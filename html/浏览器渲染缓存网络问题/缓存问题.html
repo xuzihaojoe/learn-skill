@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 缓存问题：
+         * 我们首先要知道两种最常用的缓存：强缓存，协商缓存；两种并不是只能用一个，是可以一起用的；
+         * 现在说几个后端响应头会返回的关于缓存的各种字段（这里不分强缓存和协商缓存介绍，实际是有区分场景的）
+         * 1. Cache-Control "public max-age=3600" 这样使用的
+         *    （1）：max-age=3600 单位是秒，也就是缓存多久
+         *    （2）：no-cache 强制缓存失效，每次请求都会发送，后端会判断是否返回缓存
+         *    （3）：no-store 缓存失效，每次请求都会发送，后端会判断是否返回缓存
+         *    （4）：private 私有没有什么意思
+         *    （5）：public 公开没什么意思
+         * 2. Expires 到期时间（这个是http1.0的时候用的，现在基本没用了）
+         * 3. Last-Modified 最后一次修改时间
+         * 4. ETag 一个唯一编码后端生成（用于比较请求是否有变化）
+         * 5. Date 服务器时间（没有的时候用浏览器时间）
+         * 6. If-Modified-Since 上一次的修改时间，也就是前端缓存的Last-Modified-Since，在到期后就会发这个，告诉后端，这是你上次的修改时间，现在有变化了吗？
+         *    这是对比的手段之一：比如这次修改的时间2026-01-01 12:00:00 , 后端拿到会对比业务上的时间，就知道是否要返回新的响应，还是返回304，
+         * 7. If-None-Match 前端缓存的ETag，在到期的时候会发这个，告诉后端，这是你上次的ETag，现在有变化了吗？
+         * 先说强缓存
+         * 就是设置Cache-Control pulibc max-age=3600 然后如果没有过期前端就会从浏览器拿数据，如果过期了，就看看有没有协商缓存的相关配置：Etag，Last-Modified, no-cache 如果没有，后端就直接返回新的响应，如果有，就下一步
+         * 协商缓存
+         * 会给后端发送请求，后端会接受 no-cache（走协商缓存分支），If-Modified-Since（Last-Modified），If-None-Match（Etag），
+         * 然后对比，优先对比Etag（只对比一个就行了），如果有缓存就返回304，这时候前端就继续用缓存数据，否则就会返回新的数据给前端
+         */
+    </script>
+</body>
+</html>
+   ！

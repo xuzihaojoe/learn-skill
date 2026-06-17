@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /**
+            伪类
+            link 链接
+            visited 访过得链接
+            hover 鼠标悬停
+            active 点击链接得那刻激活
+            focus 表单组件得聚焦
+         */
+        .baidu-link:link {
+            color: red;
+        }
+        .baidu-link:visited {
+            color: green;
+        }
+        .baidu-link:hover {
+            color: orangered;
+        }
+        .baidu-link:active {
+            color: deeppink;
+        }
+        input:focus {
+            background-color: yellow;
+        }
+        /**
+         *  first-child 父元素得第一个子元素
+         这里要搞清楚，说的是当前得元素，也就是你设置div: first-child 是说你的div在你得父元素是第一个就会生效，是作用于当前容器，不是作用于父级容器
+            last-child 父元素得最后一个子元素
+            nth-child(n) 父元素得第几n次子元素，可以写公式（2n，event表示双数，2n+1，odd表示奇数）
+            nth-last-child(n) 同上，但是从倒数开始算起
+            only-child 父元素得唯一一个子元素，只有一个得时候才会生效
+            // 这是兄弟级别
+            first-of-type
+            last-of-type
+            nth-of-type(n)
+            nth-last-of-type(n)
+            only-of-type
+
+            root 指向html
+            empty 匹配没有任何子元素得元素
+
+            表单类型得的伪类
+            enabled
+            disabled
+            checked 选中的单选框，多选框
+            required 必填的表单项
+            optional 没有设置必填的
+            valid/invalid 合法/不合法
+            read-only/read-write 只读/可写
+         */
+        .box > div:nth-of-type(1) {
+            height: 100px;
+            width: 100px;
+            background-color: pink;
+        }
+
+        /**
+         * 伪元素
+         */
+        ::before {
+            content: 'before';
+        }
+        ::after {
+            content: 'after';
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <a class="baidu-link" href="baidu.com">baidu.com</a>
+        <h1>test</h1>
+        <input  value="value" />
+        <div class="one">1</div>
+        <div class="two">2</div>
+        <div class="three">3</div>
+        <div class="four">4</div>
+        <div class="five">5</div>
+        <div class="six">6</div>
+    </div>
+</body>
+</html>
