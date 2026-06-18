@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            font-size: 20px;
+            line-height: 400%; // 不要写百分比，这样子元素会继承，比如 20px * 4 = 80px
+            // 这样子元素就继承line-height 就是80px
+            // 但是如果写成 4，就是根据子元素来继承，30px * 4 = 120px
+        }
+        .box .content {
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        111
+        <div class="content">222</div>
+    </div>
+</body>
+</html>
