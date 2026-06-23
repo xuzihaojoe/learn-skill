@@ -1,1 +1,7 @@
 .idea
+ts/node_modules
+ts/dist
+
+# 通用规则（建议加上，未来不管哪个目录都生效）
+node_modules/
+dist/
